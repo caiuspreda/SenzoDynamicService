@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Swashbuckle.Swagger.Annotations;
+using SenzoDynamicService.Models;
+using SenzoDynamicService.Data.Provider;
 
 namespace SenzoDynamicService.Controllers
 {
@@ -28,9 +30,13 @@ namespace SenzoDynamicService.Controllers
 
         // POST api/values
         [SwaggerOperation("Create")]
-        [SwaggerResponse(HttpStatusCode.Created)]
-        public void Post([FromBody]string value)
+        [SwaggerResponse(HttpStatusCode.OK, "Sensor value saved.", typeof(SensorReading))]
+        public HttpResponseMessage Post([FromBody]SensorReading sensorReading)
         {
+            TableStorageProvider<SensorReading> storageProvider = new TableStorageProvider<SensorReading>("SensorData");
+            storageProvider.Insert(sensorReading);
+
+            return Request.CreateResponse<SensorReading>(HttpStatusCode.OK, sensorReading);
         }
 
         // PUT api/values/5
