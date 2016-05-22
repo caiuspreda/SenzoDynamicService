@@ -30,11 +30,13 @@ namespace SenzoDynamicService.Models
 
         public SensorReadingEntry()
         {
+            this.PartitionKey = DateTime.MaxValue.Subtract(DateTime.UtcNow).TotalMilliseconds.ToString();
         }
 
         public SensorReadingEntry(string deviceId, string sensorName)
         {
-            this.PartitionKey = deviceId;
+            //this.PartitionKey = deviceId;
+            this.PartitionKey = DateTime.MaxValue.Subtract(DateTime.UtcNow).TotalMilliseconds.ToString();
             this.RowKey = sensorName;
         }
     }

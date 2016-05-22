@@ -13,19 +13,12 @@ namespace SenzoDynamicService.Controllers
     public class ValuesController : ApiController
     {
         // GET api/values
-        [SwaggerOperation("GetAll")]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        [SwaggerOperation("GetById")]
+        [SwaggerOperation("GetLastValues")]
         [SwaggerResponse(HttpStatusCode.OK)]
-        [SwaggerResponse(HttpStatusCode.NotFound)]
-        public string Get(int id)
+        public HttpResponseMessage Get(int noOfValues)
         {
-            return "value";
+            TableStorageProvider<SensorReadingEntry> storageProvider = new TableStorageProvider<SensorReadingEntry>("SensorData");
+            return Request.CreateResponse<IEnumerable<SensorReadingEntry>>(HttpStatusCode.OK, storageProvider.GetLastValues(100).ToArray());
         }
 
         // POST api/values
@@ -36,7 +29,6 @@ namespace SenzoDynamicService.Controllers
             TableStorageProvider<SensorReadingEntry> storageProvider = new TableStorageProvider<SensorReadingEntry>("SensorData");
 
             SensorReadingEntry sre = new SensorReadingEntry();
-            sre.PartitionKey = sensorReading.DeviceId;
             sre.RowKey = sensorReading.SensorName;
             sre.Value = sensorReading.Value;
             sre.UtcTicks = DateTime.UtcNow.Ticks;

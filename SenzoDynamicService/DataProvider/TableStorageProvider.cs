@@ -76,9 +76,9 @@ namespace SenzoDynamicService.Data.Provider
             return CloudTable.ExecuteQuery(query, new TableRequestOptions() { RetryPolicy = this.azureSettings.RetryPolicy }).ToList();
         }
 
-        public List<TEntity> GetAllAbove(string keyValue, KeyType keyType)
+        public List<TEntity> GetLastValues(int noOfvalues)
         {
-            var query = new TableQuery<TEntity>().Where(TableQuery.GenerateFilterCondition(keyType.ToString(), QueryComparisons.GreaterThanOrEqual, keyValue));
+            var query = new TableQuery<TEntity>().Take(noOfvalues);
 
             return CloudTable.ExecuteQuery(query, new TableRequestOptions() { RetryPolicy = this.azureSettings.RetryPolicy }).ToList();
         }
