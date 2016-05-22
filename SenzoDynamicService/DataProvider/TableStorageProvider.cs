@@ -76,7 +76,12 @@ namespace SenzoDynamicService.Data.Provider
             return CloudTable.ExecuteQuery(query, new TableRequestOptions() { RetryPolicy = this.azureSettings.RetryPolicy }).ToList();
         }
 
+        public List<TEntity> GetAllAbove(string keyValue, KeyType keyType)
+        {
+            var query = new TableQuery<TEntity>().Where(TableQuery.GenerateFilterCondition(keyType.ToString(), QueryComparisons.GreaterThanOrEqual, keyValue));
 
+            return CloudTable.ExecuteQuery(query, new TableRequestOptions() { RetryPolicy = this.azureSettings.RetryPolicy }).ToList();
+        }
 
         /// <summary>
         /// Retrieves a single entity given the primary and row key.

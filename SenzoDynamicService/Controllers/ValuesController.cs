@@ -33,11 +33,25 @@ namespace SenzoDynamicService.Controllers
         [SwaggerResponse(HttpStatusCode.OK, "Sensor value saved.", typeof(SensorReading))]
         public HttpResponseMessage Post([FromBody]SensorReading sensorReading)
         {
-            TableStorageProvider<SensorReading> storageProvider = new TableStorageProvider<SensorReading>("SensorData");
-            storageProvider.Insert(sensorReading);
+            TableStorageProvider<SensorReadingEntry> storageProvider = new TableStorageProvider<SensorReadingEntry>("SensorData");
+
+            SensorReadingEntry sre = new SensorReadingEntry();
+            sre.PartitionKey = sensorReading.DeviceId;
+            sre.RowKey = sensorReading.SensorName;
+            sre.Value = sensorReading.Value;
+            sre.UtcTicks = DateTime.UtcNow.Ticks;
+            storageProvider.Insert(sre);
 
             return Request.CreateResponse<SensorReading>(HttpStatusCode.OK, sensorReading);
         }
+
+        // POST api/values
+        //[SwaggerOperation("Dummy")]
+        //[SwaggerResponse(HttpStatusCode.OK, "Dummy", typeof(int))]
+        //public HttpResponseMessage Post([FromBody]int sensorReading)
+        //{
+        //    return Request.CreateResponse<int>(HttpStatusCode.OK, 10);
+        //}
 
         // PUT api/values/5
         [SwaggerOperation("Update")]
