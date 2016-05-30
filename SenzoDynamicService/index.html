@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>SenzoDynamics(R) - Sensor Dashboad</title>
+    <!--<script src="libs/require/require.js"></script>-->
+    <script src="libs/react/react-0.14.3.js"></script>
+    <script src="libs/react/react-dom-0.14.3.js"></script>
+    <script src="libs/react/react-grid-layout.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.29.4/react-bootstrap.min.js"></script>
+    <script src="js/senzo.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/react-grid-styles.css" />
+    <link rel="stylesheet" href="css/senzo.css" />
+    <script>
+        var Alert = ReactBootstrap.Alert;
+        document.addEventListener("DOMContentLoaded", function (event) {
+            initApp();
+        });
+
+var xmlhttp = new XMLHttpRequest();
+var url = "http://senzodynamicservice20160521084020.azurewebsites.net/api/Values?noOfValues=100";
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        g_data = JSON.parse(xmlhttp.responseText);
+        g_loading = false;
+    }
+};
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+g_loading = true;
+    </script>
+</head>
+
+<body>
+    <main></main>
+</body>
+</html>
+
